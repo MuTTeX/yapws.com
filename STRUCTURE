@@ -1,0 +1,10 @@
+Structure:
+1. Nginx
+ a. configs
+ b. docker container
+
+2. Uwsgi
+ a. configs
+ b. docker container
+
+3. Flask 
