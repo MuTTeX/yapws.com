@@ -1,3 +1,0 @@
-docker build -t yapws_nginx_img .
-
-docker run --name yapws_nginx -d -p 80:80 yapws_nginx_img
