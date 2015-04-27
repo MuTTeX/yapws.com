@@ -6,9 +6,9 @@ sudo docker build -t muttex/uwsgi_flask .
 cd docker_files/nginx/
 sudo docker build -t muttex/nginx:v2 .
 
-sudo docker create -p 8080:8080 --name uwsgi -v /home/developer/yapws.com/uwsgi:/home/www muttex/uwsgi_flask
+sudo docker create -p 8080:8080 --name uwsgi -v ~/www/yapws.com:/home/www muttex/uwsgi_flask
 
-sudo docker create -p 80:80     --name nginx -v /home/developer/yapws.com/nginx:/home/www --link uwsgi:uwsgi muttex/nginx:v2
+sudo docker create -p 80:80     --name nginx -v ~/www/yapws.com:/home/www --link uwsgi:uwsgi muttex/nginx:v2
 
 
 ## USAGE:
@@ -21,6 +21,10 @@ sudo docker stop nginx
 
 sudo docker logs uwsgi
 sudo docker logs nginx
+
+
+sudo docker rm uwsgi
+sudo docker rm nginx
 
 sudo docker restart uwsgi
 sudo docker restart nginx
