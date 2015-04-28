@@ -9,7 +9,7 @@ sudo docker build -t muttex/nginx:v2 .
 
 --------> UWSGI debug mode: <----------
 
-sudo docker run --rm -i -t --name uwsgi -e DEBUG_MODE=true -p 8080:8080 \
+sudo docker run --rm -i -t --name uwsgi -e DEBUG=true -e HTTP_MODE=true -p 8080:8080 \
                                    -v ~/www/yapws.com/configs/uwsgi.ini:/etc/uwsgi/vassals/uwsgi.ini \
                                    -v ~/www/yapws.com:/home/www   muttex/uwsgi_flask
 
