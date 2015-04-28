@@ -6,9 +6,23 @@ sudo docker build -t muttex/uwsgi_flask .
 cd docker_files/nginx/
 sudo docker build -t muttex/nginx:v2 .
 
-sudo docker create -p 8080:8080 --name uwsgi -v ~/www/yapws.com:/home/www muttex/uwsgi_flask
 
-sudo docker create -p 80:80     --name nginx -v ~/www/yapws.com:/home/www --link uwsgi:uwsgi muttex/nginx:v2
+--------> UWSGI debug mode: <----------
+
+sudo docker run --rm -i -t -e DEBUG_MODE=true -p 8080:8080 \
+                                   -v ~/www/yapws.com/configs/uwsgi.ini:/etc/uwsgi/vassals/uwsgi.ini \
+                                   -v ~/www/yapws.com:/home/www   muttex/uwsgi_flask
+
+
+                                   -v ~/www/yapws.com/configs/uwsgi_job.conf:/etc/init/uwsgi.conf \
+--------> UWSGI deploy mode: <----------
+
+sudo docker create  --name uwsgi -e DEPLOY_MODE=true \
+								  -v ~/www/yapws.com/configs/uwsgi.ini:/etc/uwsgi/vassals/uwsgi.ini \
+								  -v ~/www/yapws.com:/home/www        muttex/uwsgi_flask
+
+
+sudo docker create -p 80:80  --name nginx -v ~/www/yapws.com:/home/www --link uwsgi:uwsgi muttex/nginx:v2
 
 
 ## USAGE:
