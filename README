@@ -1,0 +1,47 @@
+:DEPLOYMENT
+
+cd docker_files/uwsgi/
+sudo docker build -t muttex/uwsgi_flask .
+
+cd docker_files/nginx/
+sudo docker build -t muttex/nginx:v2 .
+
+
+--------> UWSGI debug mode: <----------
+
+sudo docker create  --name uwsgi_debug -e DEBUG_MODE=true\
+                                   -v ~/www/yapws.com/configs/uwsgi.ini:/etc/uwsgi/vassals/uwsgi.ini \
+                                   -v ~/www/yapws.com:/home/www   muttex/uwsgi_flask
+
+
+--------> UWSGI deploy mode: <----------
+
+sudo docker create  --name uwsgi -e DEPLOY_MODE=true \
+                                   -v ~/www/yapws.com/configs/uwsgi.ini:/etc/uwsgi/vassals/uwsgi.ini \
+                                   -v ~/www/yapws.com:/home/www        muttex/uwsgi_flask
+
+
+sudo docker create -p 80:80  --name nginx -v ~/www/yapws.com:/home/www --link uwsgi:uwsgi muttex/nginx:v2
+
+sudo docker create -p 80:80  --name nginx -v ~/www/yapws.com:/home/www --link uwsgi_debug:uwsgi muttex/nginx:v2
+
+## USAGE:
+
+sudo docker start uwsgi
+sudo docker start nginx
+
+sudo docker stop uwsgi
+sudo docker stop nginx
+
+sudo docker logs uwsgi
+sudo docker logs nginx
+
+
+sudo docker rm uwsgi
+sudo docker rm nginx
+
+sudo docker restart uwsgi
+sudo docker restart nginx
+
+sudo docker attach --sig-proxy=false uwsgi
+sudo docker attach --sig-proxy=false nginx
