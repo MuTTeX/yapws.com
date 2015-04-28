@@ -9,7 +9,7 @@ print("views.func")
 def index(msg="message"):
     print(msg)
     print(request.args)
-    return "Hello" + msg
+    return "Hello  " + msg
 
 
 # @app.route('/')
